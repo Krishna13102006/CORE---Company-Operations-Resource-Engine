@@ -1,0 +1,179 @@
+<!-- DASHBOARD PANEL — role-adaptive analytics, charts powered by Plotly -->
+
+<!-- Page header with greeting -->
+<div class="page-header" style="margin-bottom:24px;">
+  <div class="page-header-left">
+    <h1 id="dashboard-greeting">Good morning!</h1>
+    <p id="dashboard-date" style="color:var(--color-text-muted);font-size:14px;"></p>
+  </div>
+  <div>
+    <button class="btn btn-ghost btn-sm" id="btn-refresh-dashboard">↻ Refresh</button>
+  </div>
+</div>
+
+<!-- Overview stat cards — populated by JS, shown to all roles -->
+<div class="stats-grid" id="overview-stats-grid" style="margin-bottom:32px;">
+  <div class="stat-card">
+    <div class="stat-card-label">Loading...</div>
+    <div class="stat-card-value" style="font-size:20px;">—</div>
+  </div>
+</div>
+
+<!-- Main content grid — two column on desktop -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;" id="dashboard-main-grid">
+
+  <!-- Recent Activity -->
+  <div class="card">
+    <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;">
+      <span class="text-card-title">Recent Activity</span>
+      <span style="font-size:12px;color:var(--color-text-muted);" id="activity-update-time"></span>
+    </div>
+    <div class="card-body" style="padding:0;">
+      <div id="activity-list" style="max-height:380px;overflow-y:auto;">
+        <div style="display:flex;justify-content:center;padding:32px;">
+          <span class="spinner" style="width:24px;height:24px;border-width:2px;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Tasks summary -->
+  <div class="card" id="card-projects-summary">
+    <div class="card-header">
+      <span class="text-card-title">My Tasks</span>
+    </div>
+    <div class="card-body" style="padding:16px 24px;">
+      <div id="chart-my-tasks"></div>
+      <div id="overdue-tasks-alert" style="display:none;margin-top:12px;padding:10px 14px;background:var(--color-error-bg);border-radius:6px;">
+        <span style="font-size:13px;color:var(--color-error);font-weight:600;" id="overdue-tasks-count"></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Knowledge section — all roles -->
+<div class="card" style="margin-bottom:24px;" id="card-knowledge-analytics">
+  <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;">
+    <span class="text-card-title">Knowledge Base</span>
+    <span id="knowledge-total-badge" class="badge badge-blue"></span>
+  </div>
+  <div class="card-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">By Category</div>
+        <div id="chart-docs-category"></div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Processing Status</div>
+        <div id="chart-docs-status"></div>
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <div style="font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Uploads — Last 30 Days</div>
+      <div id="chart-uploads-trend"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Teams section — manager/hr/admin only -->
+<div class="card" style="margin-bottom:24px;display:none;" id="card-teams-analytics">
+  <div class="card-header">
+    <span class="text-card-title">Team Overview</span>
+  </div>
+  <div class="card-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Headcount by Department</div>
+        <div id="chart-headcount"></div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Upcoming Leave (30 days)</div>
+        <div id="upcoming-leave-list" style="max-height:220px;overflow-y:auto;">
+          <div style="color:var(--color-text-muted);font-size:13px;">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hiring section — hr/admin only -->
+<div class="card" style="margin-bottom:24px;display:none;" id="card-hiring-analytics">
+  <div class="card-header">
+    <span class="text-card-title">Hiring Pipeline</span>
+  </div>
+  <div class="card-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Application Funnel</div>
+        <div id="chart-hiring-funnel"></div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Applications — Last 60 Days</div>
+        <div id="chart-apps-trend"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;">
+      <div class="stat-card" style="flex:1;min-width:140px;">
+        <div class="stat-card-label">Avg. Days to Hire</div>
+        <div class="stat-card-value" id="stat-avg-hire-days">—</div>
+      </div>
+      <div class="stat-card" style="flex:1;min-width:140px;">
+        <div class="stat-card-label">Avg. Match Score</div>
+        <div class="stat-card-value" id="stat-avg-match">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Projects detail section — all roles -->
+<div class="card" style="margin-bottom:24px;" id="card-projects-detail">
+  <div class="card-header">
+    <span class="text-card-title">Project Health</span>
+  </div>
+  <div class="card-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Tasks by Priority</div>
+        <div id="chart-tasks-priority"></div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Overdue Tasks</div>
+        <div id="overdue-tasks-list" style="max-height:200px;overflow-y:auto;">
+          <div style="color:var(--color-text-muted);font-size:13px;">Loading...</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <div style="font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Task Completions — Last 30 Days</div>
+      <div id="chart-completion-trend"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Attrition Risk — hr/admin only -->
+<div class="card" style="margin-bottom:24px;display:none;" id="card-attrition-risk">
+  <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;">
+    <span class="text-card-title">🤖 Attrition Risk</span>
+    <span style="font-size:12px;color:var(--color-text-muted);">Powered by XGBoost</span>
+  </div>
+  <div class="card-body" style="padding:0;">
+    <div id="attrition-risk-content" style="padding:16px 24px;color:var(--color-text-muted);font-size:14px;">
+      Loading...
+    </div>
+  </div>
+</div>
+
+<!-- Project Risk — manager/hr/admin only -->
+<div class="card" style="margin-bottom:24px;display:none;" id="card-project-risk">
+  <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;">
+    <span class="text-card-title">🤖 Project Risk Scores</span>
+    <span style="font-size:12px;color:var(--color-text-muted);">Powered by XGBoost</span>
+  </div>
+  <div class="card-body" style="padding:0;">
+    <div id="project-risk-content" style="padding:16px 24px;color:var(--color-text-muted);font-size:14px;">
+      Loading...
+    </div>
+  </div>
+</div>
+

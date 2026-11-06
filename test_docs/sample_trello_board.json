@@ -1,0 +1,36 @@
+{
+  "name": "Q4 Cloud Infrastructure & Security Sprint",
+  "desc": "Trello board export for core migration and failover readiness",
+  "cards": [
+    {
+      "name": "Set up AWS Route53 Multi-Region DNS Failover",
+      "desc": "Configure latency-based routing and health check alarms for automated secondary region failover.",
+      "due": "2026-10-15T18:00:00.000Z"
+    },
+    {
+      "name": "Implement Redis Semantic Cache Layer",
+      "desc": "Deploy Upstash Redis cluster to cache embeddings and high-frequency document chunks.",
+      "due": "2026-10-18T18:00:00.000Z"
+    },
+    {
+      "name": "Enforce Multi-Factor Authentication (2FA) for Admins",
+      "desc": "Require TOTP authentication for all users with admin or HR roles during workspace login.",
+      "due": "2026-10-20T18:00:00.000Z"
+    },
+    {
+      "name": "Audit Celery Async Worker Queue Throughput",
+      "desc": "Profile Redis broker latency and scale background worker concurrency for heavy PDF OCR extraction.",
+      "due": "2026-10-22T18:00:00.000Z"
+    },
+    {
+      "name": "Build Automated Database Backup & Point-In-Time Recovery",
+      "desc": "Configure automated hourly snapshot retention policy and verify staging restore scripts.",
+      "due": "2026-10-25T18:00:00.000Z"
+    },
+    {
+      "name": "Migrate Frontend Bundler to Vite 8 Production Target",
+      "desc": "Optimize client code splitting, dynamic chunks, and KaTeX math rendering assets.",
+      "due": "2026-10-28T18:00:00.000Z"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('departments/command-center/',                views.DepartmentCommandCenterView.as_view()),
+    path('departments/',                               views.DepartmentListView.as_view()),
+    path('departments/<uuid:dept_id>/',                views.DepartmentDetailView.as_view()),
+    path('employees/',                                 views.EmployeeListView.as_view()),
+    path('employees/<uuid:employee_id>/',              views.EmployeeDetailView.as_view()),
+    path('employees/<uuid:employee_id>/balances/',     views.EmployeeLeaveBalanceUpdateView.as_view()),
+    path('leave/',                                     views.LeaveListView.as_view()),
+    path('leave/my-summary/',                          views.LeaveMySummaryView.as_view()),
+    path('leave/team-calendar/',                       views.LeaveTeamCalendarView.as_view()),
+    path('leave/ai-draft/',                            views.LeaveAIDraftView.as_view()),
+    path('leave/holidays/',                            views.PublicHolidayListView.as_view()),
+    path('leave/holidays/<uuid:holiday_id>/',          views.PublicHolidayDetailView.as_view()),
+    path('leave/<uuid:leave_id>/',                     views.LeaveDetailView.as_view()),
+    path('leave/<uuid:leave_id>/cancel/',              views.LeaveCancelView.as_view()),
+    path('leave/<uuid:leave_id>/approve/',             views.LeaveApproveView.as_view()),
+    path('leave/<uuid:leave_id>/reject/',              views.LeaveRejectView.as_view()),
+    path('leave/feed/<uuid:employee_id>/<str:token>/', views.LeaveCalendarFeedView.as_view(), name='leave-calendar-feed'),
+    path('reviews/',                                   views.PerformanceReviewListView.as_view()),
+    path('stats/',                                     views.TeamStatsView.as_view()),
+    path('status-feed/',                               views.DailyStatusFeedView.as_view()),
+    path('status-feed/summary/',                       views.DailyStatusSummaryView.as_view()),
+    path('daily-status/my-tasks/',                     views.UserStandupTasksView.as_view()),
+    path('daily-status/',                              views.DailyStatusFeedView.as_view()),
+    path('departments/standup-banner/',                views.DepartmentStandupBannerView.as_view()),
+    path('departments/standup-digest/',                views.DepartmentStandupDigestView.as_view()),
+    path('departments/<uuid:dept_id>/standup-digest/', views.DepartmentStandupDigestView.as_view()),
+    path('employees/bulk-import/',                     views.BulkTeamImportView.as_view()),
+    path('delegations/',                               views.ApprovalDelegationListCreateView.as_view()),
+    path('delegations/<uuid:delegation_id>/',          views.ApprovalDelegationDetailView.as_view()),
+    path('delegations/<uuid:delegation_id>/revoke/',   views.ApprovalDelegationRevokeView.as_view()),
+
+    # Pillar 4: 1-on-1 Workspaces, Skill Matrix, and Runbooks
+    path('one-on-one/',                                views.OneOnOneWorkspaceListCreateView.as_view()),
+    path('one-on-one/<uuid:pk>/',                      views.OneOnOneWorkspaceDetailView.as_view()),
+    path('one-on-one/<uuid:pk>/convert-task/',         views.OneOnOneConvertTaskView.as_view()),
+    path('one-on-one/<uuid:pk>/launch-meeting/',       views.OneOnOneLaunchMeetingView.as_view()),
+    path('skills/matrix/',                             views.DepartmentSkillMatrixView.as_view()),
+    path('employees/<uuid:employee_id>/skills/',       views.EmployeeSkillUpdateView.as_view()),
+    path('departments/<uuid:dept_id>/runbooks/',       views.DepartmentRunbookTemplateListCreateView.as_view()),
+    path('runbook-executions/',                        views.DepartmentRunbookExecutionListCreateView.as_view()),
+    path('runbook-executions/<uuid:execution_id>/toggle-step/', views.DepartmentRunbookStepToggleView.as_view()),
+]
+

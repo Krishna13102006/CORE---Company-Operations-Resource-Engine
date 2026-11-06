@@ -1,0 +1,327 @@
+<!-- PROJECTS PANEL -->
+
+<!-- PROJECT LIST VIEW — default -->
+<div id="projects-list-view">
+
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1>Projects</h1>
+      <p>Track projects and tasks across your organisation</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button
+        class="btn btn-secondary btn-sm"
+        id="btn-my-tasks-toggle"
+      >My Tasks</button>
+      <button class="btn btn-primary btn-sm" id="btn-create-project">
+        + New Project
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:20px;flex-wrap:wrap;">
+    <input
+      type="text"
+      id="projects-search"
+      class="form-input"
+      placeholder="Search projects..."
+      style="width:240px;margin-bottom:0;"
+    >
+    <select id="projects-filter-status" class="form-select" style="width:160px;margin-bottom:0;">
+      <option value="">All Statuses</option>
+      <option value="planning">Planning</option>
+      <option value="active">Active</option>
+      <option value="on_hold">On Hold</option>
+      <option value="done">Done</option>
+    </select>
+    <span id="projects-count" style="font-size:13px;color:var(--color-text-muted);margin-left:auto;"></span>
+  </div>
+
+  <!-- Projects grid -->
+  <div id="projects-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
+    <div style="display:flex;justify-content:center;padding:48px;grid-column:1/-1;">
+      <span class="spinner" style="width:32px;height:32px;border-width:3px;"></span>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div id="projects-pagination" style="margin-top:16px;"></div>
+
+</div>
+
+<!-- MY TASKS VIEW -->
+<div id="my-tasks-view" style="display:none;">
+
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1>My Tasks</h1>
+      <p>All tasks assigned to you across all projects</p>
+    </div>
+    <div>
+      <button class="btn btn-ghost btn-sm" id="btn-back-to-projects">
+        ← All Projects
+      </button>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:20px;">
+    <select id="mytasks-filter-status" class="form-select" style="width:160px;margin-bottom:0;">
+      <option value="">All Statuses</option>
+      <option value="todo">To Do</option>
+      <option value="in_progress">In Progress</option>
+      <option value="blocked">Blocked</option>
+      <option value="done">Done</option>
+    </select>
+  </div>
+
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Project</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Due Date</th>
+        </tr>
+      </thead>
+      <tbody id="my-tasks-list">
+        <tr>
+          <td colspan="5" style="text-align:center;padding:32px;">
+            <span class="spinner" style="width:24px;height:24px;border-width:2px;"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="my-tasks-pagination" style="margin-top:16px;"></div>
+
+</div>
+
+<!-- PROJECT DETAIL VIEW -->
+<div id="project-detail-view" style="display:none;">
+
+  <!-- Back button -->
+  <div style="margin-bottom:16px;">
+    <button class="btn btn-ghost btn-sm" id="btn-back-from-detail">
+      ← Back to Projects
+    </button>
+  </div>
+
+  <!-- Project header -->
+  <div class="card" style="margin-bottom:20px;" id="project-detail-header"></div>
+
+  <!-- Stats strip -->
+  <div class="stats-grid" style="margin-bottom:20px;" id="project-stats-strip"></div>
+
+  <!-- Task board header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+    <div style="font-size:16px;font-weight:600;color:var(--color-navy);">Task Board</div>
+    <button class="btn btn-primary btn-sm" id="btn-create-task">+ Add Task</button>
+  </div>
+
+  <!-- Kanban board -->
+  <div
+    id="kanban-board"
+    style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start;"
+  >
+    <!-- Rendered by JavaScript -->
+  </div>
+
+</div>
+
+<!-- TASK DETAIL DRAWER -->
+<div id="task-drawer-overlay" class="modal-overlay hidden" style="z-index:99;"></div>
+<div id="task-drawer" class="drawer hidden" style="z-index:100;width:480px;background:var(--color-surface);border-left:1px solid var(--color-border);box-shadow:-4px 0 24px rgba(0,0,0,0.15);">
+  <div class="drawer-header" style="padding:16px;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;">
+    <span class="modal-title" id="task-drawer-title" style="font-size:16px;font-weight:700;color:var(--color-navy);">Task Details</span>
+    <button
+      class="btn btn-icon btn-ghost"
+      id="task-drawer-close"
+      style="font-size:18px;line-height:1;"
+    >×</button>
+  </div>
+  <div class="drawer-body" id="task-drawer-body" style="padding:16px;overflow-y:auto;height:calc(100% - 130px);">
+    <!-- Rendered by JavaScript -->
+  </div>
+  <div class="drawer-footer" id="task-drawer-footer" style="padding:16px;border-top:1px solid var(--color-border);display:flex;justify-content:flex-end;gap:8px;">
+    <button class="btn btn-ghost btn-sm" id="task-drawer-cancel">Close</button>
+    <button class="btn btn-primary btn-sm" id="task-drawer-save">Save Changes</button>
+  </div>
+</div>
+
+<!-- CREATE PROJECT MODAL -->
+<div id="modal-create-project" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">New Project</span>
+      <button
+        class="btn btn-icon btn-ghost"
+        id="modal-create-project-close"
+        style="font-size:18px;line-height:1;"
+      >×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Project Name <span class="required">*</span></label>
+        <input type="text" id="create-project-name" class="form-input" placeholder="e.g. Platform Migration">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea id="create-project-desc" class="form-input" rows="3" placeholder="What is this project about?"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Status</label>
+          <select id="create-project-status" class="form-select">
+            <option value="planning">Planning</option>
+            <option value="active">Active</option>
+            <option value="on_hold">On Hold</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Owner</label>
+          <select id="create-project-owner" class="form-select">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Start Date</label>
+          <input type="date" id="create-project-start-date" class="form-input">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">End Date</label>
+          <input type="date" id="create-project-end-date" class="form-input">
+        </div>
+      </div>
+      <div id="create-project-error" style="display:none;padding:10px 14px;background:var(--color-error-bg);border-radius:6px;color:var(--color-error);font-size:13px;margin-top:16px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="modal-create-project-cancel">Cancel</button>
+      <button class="btn btn-primary" id="btn-create-project-submit">Create Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PROJECT MODAL -->
+<div id="modal-edit-project" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Edit Project</span>
+      <button
+        class="btn btn-icon btn-ghost"
+        id="modal-edit-project-close"
+        style="font-size:18px;line-height:1;"
+      >×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-project-id">
+      <div class="form-group">
+        <label class="form-label">Project Name <span class="required">*</span></label>
+        <input type="text" id="edit-project-name" class="form-input" placeholder="e.g. Platform Migration">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea id="edit-project-desc" class="form-input" rows="3" placeholder="What is this project about?"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Status</label>
+          <select id="edit-project-status" class="form-select">
+            <option value="planning">Planning</option>
+            <option value="active">Active</option>
+            <option value="on_hold">On Hold</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Owner</label>
+          <select id="edit-project-owner" class="form-select">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Start Date</label>
+          <input type="date" id="edit-project-start-date" class="form-input">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">End Date</label>
+          <input type="date" id="edit-project-end-date" class="form-input">
+        </div>
+      </div>
+      <div id="edit-project-error" style="display:none;padding:10px 14px;background:var(--color-error-bg);border-radius:6px;color:var(--color-error);font-size:13px;margin-top:16px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="modal-edit-project-cancel">Cancel</button>
+      <button class="btn btn-primary" id="btn-edit-project-submit">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE TASK MODAL -->
+<div id="modal-create-task" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">New Task</span>
+      <button
+        class="btn btn-icon btn-ghost"
+        id="modal-create-task-close"
+        style="font-size:18px;line-height:1;"
+      >×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Task Title <span class="required">*</span></label>
+        <input type="text" id="create-task-title" class="form-input" placeholder="e.g. Implement repository filters">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea id="create-task-desc" class="form-input" rows="3" placeholder="What needs to be done?"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Status</label>
+          <select id="create-task-status" class="form-select">
+            <option value="todo">To Do</option>
+            <option value="in_progress">In Progress</option>
+            <option value="blocked">Blocked</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Priority</label>
+          <select id="create-task-priority" class="form-select">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+            <option value="critical">Critical</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Assignee</label>
+          <select id="create-task-assignee" class="form-select">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Due Date</label>
+          <input type="date" id="create-task-due-date" class="form-input">
+        </div>
+      </div>
+      <div id="create-task-error" style="display:none;padding:10px 14px;background:var(--color-error-bg);border-radius:6px;color:var(--color-error);font-size:13px;margin-top:16px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="modal-create-task-cancel">Cancel</button>
+      <button class="btn btn-primary" id="btn-create-task-submit">Create Task</button>
+    </div>
+  </div>
+</div>

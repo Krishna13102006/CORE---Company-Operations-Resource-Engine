@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORE</title>
+  {% load static %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/core.css' %}">
+</head>
+<body>
+
+  <div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-text">CORE</div>
+        <div class="sidebar-org" id="sidebar-org-name">Loading...</div>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <!-- Rendered by JavaScript based on role -->
+      </nav>
+
+      <div class="sidebar-user">
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sidebar-user-name">—</div>
+          <div class="sidebar-user-role" id="sidebar-user-role">—</div>
+        </div>
+        <button class="btn-logout" id="logout-btn">Sign out</button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+      <div class="topbar">
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+        <div class="topbar-actions" id="topbar-actions"></div>
+      </div>
+
+      <div class="panel-content" id="panel-content">
+        <!-- Panel content rendered here -->
+        <div style="display:flex;align-items:center;justify-content:center;height:200px;">
+          <span class="spinner" style="width:32px;height:32px;border-width:3px;"></span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Toast container mounted by toast.js -->
+
+  <script src="{% static 'js/plotly.min.js' %}"></script>
+  <script src="{% static 'js/api.js' %}?v=1.0.1"></script>
+  <script src="{% static 'js/toast.js' %}?v=1.0.1"></script>
+  <script src="{% static 'js/dashboard.js' %}?v=1.0.3"></script>
+</body>
+</html>

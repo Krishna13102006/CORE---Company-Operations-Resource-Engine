@@ -1,0 +1,480 @@
+<style>
+  .hidden {
+    display: none !important;
+  }
+</style>
+
+<div class="page-header">
+  <div class="page-header-left">
+    <h1>Teams & Organization</h1>
+    <p>Manage employee records, organizational departments, leave requests, and performance tracking.</p>
+  </div>
+  <div class="page-header-actions" id="teams-header-actions">
+    <!-- Buttons dynamically shown based on role / active tab -->
+    <button class="btn btn-secondary hidden" id="btn-add-dept">Add Department</button>
+    <button class="btn btn-primary" id="btn-add-employee">Add Employee</button>
+  </div>
+</div>
+
+<!-- Tabs Navigation -->
+<div class="tab-container" style="margin-bottom: 24px; border-bottom: 1px solid var(--color-border); display: flex; gap: 24px;">
+  <button class="tab-link active" data-tab="directory" style="background: none; border: none; padding: 12px 4px; font-weight: 600; cursor: pointer; color: var(--color-navy); border-bottom: 2px solid var(--color-navy); font-size: 15px;">Directory</button>
+  <button class="tab-link" data-tab="departments" style="background: none; border: none; padding: 12px 4px; font-weight: 500; cursor: pointer; color: var(--color-text-secondary); border-bottom: 2px solid transparent; font-size: 15px;">Departments</button>
+  <button class="tab-link" data-tab="leave" style="background: none; border: none; padding: 12px 4px; font-weight: 500; cursor: pointer; color: var(--color-text-secondary); border-bottom: 2px solid transparent; font-size: 15px;">Leave Requests</button>
+</div>
+
+<!-- Main Panels Container -->
+<div id="teams-panels">
+
+  <!-- TAB: DIRECTORY -->
+  <div id="tab-directory" class="tab-content">
+    <div class="card" style="margin-bottom: 20px; padding: 16px;">
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+        <div style="flex: 1; min-width: 250px;">
+          <input type="text" id="dir-search" class="form-input" placeholder="Search employees by name or email..." style="width: 100%;">
+        </div>
+        <div style="width: 200px;">
+          <select id="dir-filter-dept" class="form-select" style="width: 100%;">
+            <option value="">All Departments</option>
+            <!-- Filled by JS -->
+          </select>
+        </div>
+        <div style="width: 150px;">
+          <select id="dir-filter-status" class="form-select" style="width: 100%;">
+            <option value="">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="on_leave">On Leave</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Employee Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Role</th>
+            <th>Manager</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="dir-table-body">
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" id="dir-pagination" style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+
+  <!-- TAB: DEPARTMENTS -->
+  <div id="tab-departments" class="tab-content hidden">
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Department Name</th>
+            <th>Parent Department</th>
+            <th>Head of Department</th>
+            <th>Employee Count</th>
+            <th style="width: 80px; text-align: right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="dept-table-body">
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: LEAVE REQUESTS -->
+  <div id="tab-leave" class="tab-content hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
+      <div style="display: flex; gap: 16px;">
+        <select id="leave-filter-status" class="form-select" style="width: 180px;">
+          <option value="">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+      <button class="btn btn-secondary" id="btn-request-leave">Request Leave</button>
+    </div>
+
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Leave Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Duration</th>
+            <th>Notes</th>
+            <th>Status</th>
+            <th>Processed By</th>
+            <th style="width: 150px; text-align: right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="leave-table-body">
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" id="leave-pagination" style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+
+</div>
+
+<!-- DETAILED SCREEN: EMPLOYEE PROFILE -->
+<div id="panel-employee-profile" class="hidden">
+  <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
+    <button class="btn btn-ghost btn-sm" id="profile-back" style="padding: 6px 12px; font-weight: 500;">← Back to Directory</button>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 24px; align-items: start;">
+    
+    <!-- Profile Left: Meta Cards -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <!-- Employee Info Summary Card -->
+      <div class="card" style="padding: 24px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="width: 80px; height: 80px; border-radius: 50%; background-color: var(--color-blue-light); color: var(--color-navy); display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; margin: 0 auto 16px auto;" id="profile-avatar">JD</div>
+          <h2 id="profile-name" style="margin: 0 0 4px 0; font-size: 22px; color: var(--color-text-primary);">John Doe</h2>
+          <span id="profile-role-badge" class="badge">Employee</span>
+          <div id="profile-status-badge-container" style="margin-top: 8px;">
+            <span class="badge badge-green">Active</span>
+          </div>
+        </div>
+
+        <div class="divider" style="margin: 16px 0;"></div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+          <div>
+            <span style="color: var(--color-text-muted); display: block; font-size: 12px; text-transform: uppercase; font-weight: 600;">Email Address</span>
+            <span id="profile-email" style="font-weight: 500; color: var(--color-text-primary);">john@example.com</span>
+          </div>
+          <div>
+            <span style="color: var(--color-text-muted); display: block; font-size: 12px; text-transform: uppercase; font-weight: 600;">Hire Date</span>
+            <span id="profile-hire-date" style="font-weight: 500; color: var(--color-text-primary);">-</span>
+          </div>
+          <div>
+            <span style="color: var(--color-text-muted); display: block; font-size: 12px; text-transform: uppercase; font-weight: 600;">Department</span>
+            <span id="profile-department" style="font-weight: 500; color: var(--color-text-primary);">-</span>
+          </div>
+          <div>
+            <span style="color: var(--color-text-muted); display: block; font-size: 12px; text-transform: uppercase; font-weight: 600;">Reports To</span>
+            <span id="profile-manager" style="font-weight: 500; color: var(--color-text-primary);">-</span>
+          </div>
+        </div>
+
+        <!-- HR Edit Actions panel (Admin/HR only) -->
+        <div id="hr-actions-container" class="hidden" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border);">
+          <h4 style="margin: 0 0 12px 0; color: var(--color-text-primary);">Administrative Actions</h4>
+          <button class="btn btn-secondary" id="btn-edit-profile" style="width: 100%; margin-bottom: 8px;">Update Profile Info</button>
+          <button class="btn btn-danger" id="btn-deactivate-employee" style="width: 100%;">Deactivate Account</button>
+        </div>
+      </div>
+
+      <!-- Leave Balances Card -->
+      <div class="card" style="padding: 24px;">
+        <h3 style="margin: 0 0 16px 0; color: var(--color-text-primary);">Leave Balances (Days)</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; text-align: center;">
+          <div style="background-color: var(--color-bg); padding: 12px 4px; border-radius: 6px; border: 1px solid var(--color-border);">
+            <span style="font-size: 24px; font-weight: 700; color: var(--color-navy);" id="bal-annual">0</span>
+            <span style="display: block; font-size: 11px; color: var(--color-text-muted); margin-top: 4px; font-weight: 500;">Annual</span>
+          </div>
+          <div style="background-color: var(--color-bg); padding: 12px 4px; border-radius: 6px; border: 1px solid var(--color-border);">
+            <span style="font-size: 24px; font-weight: 700; color: var(--color-navy);" id="bal-sick">0</span>
+            <span style="display: block; font-size: 11px; color: var(--color-text-muted); margin-top: 4px; font-weight: 500;">Sick</span>
+          </div>
+          <div style="background-color: var(--color-bg); padding: 12px 4px; border-radius: 6px; border: 1px solid var(--color-border);">
+            <span style="font-size: 24px; font-weight: 700; color: var(--color-navy);" id="bal-unpaid">0</span>
+            <span style="display: block; font-size: 11px; color: var(--color-text-muted); margin-top: 4px; font-weight: 500;">Unpaid</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Right: Details & History -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      
+      <!-- Section: Active Projects Tasks -->
+      <div class="card" style="padding: 24px;">
+        <h3 style="margin: 0 0 16px 0; color: var(--color-text-primary);">Assigned Project Tasks</h3>
+        <div class="table-container" style="border: 1px solid var(--color-border); border-radius: 6px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>Task Title</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Due Date</th>
+              </tr>
+            </thead>
+            <tbody id="profile-tasks-body">
+              <!-- Dynamically filled -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section: Performance Reviews -->
+      <div class="card" style="padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="margin: 0; color: var(--color-text-primary);">Performance Reviews</h3>
+          <button class="btn btn-secondary btn-sm" id="btn-add-review">Add Review</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;" id="profile-reviews-list">
+          <!-- Dynamically filled -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL: ADD EMPLOYEE -->
+<div id="modal-add-employee" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Create Employee Account</div>
+      <button type="button" style="background:none;border:none;font-size:18px;cursor:pointer;" class="modal-close" data-modal="modal-add-employee">✕</button>
+    </div>
+    <form id="form-add-employee">
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="emp-first-name">First Name <span class="required" style="color:var(--color-error)">*</span></label>
+            <input type="text" id="emp-first-name" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="emp-last-name">Last Name <span class="required" style="color:var(--color-error)">*</span></label>
+            <input type="text" id="emp-last-name" class="form-input" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="emp-email">Email Address <span class="required" style="color:var(--color-error)">*</span></label>
+          <input type="email" id="emp-email" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="emp-password">Initial Password <span class="required" style="color:var(--color-error)">*</span></label>
+          <input type="password" id="emp-password" class="form-input" placeholder="Min. 8 characters" required>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="emp-role">Organization Role <span class="required" style="color:var(--color-error)">*</span></label>
+            <select id="emp-role" class="form-select" required>
+              <option value="">Select Role</option>
+              <option value="employee">Employee</option>
+              <option value="manager">Manager</option>
+              <option value="hr">HR Specialist</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="emp-dept">Department</label>
+            <select id="emp-dept" class="form-select">
+              <option value="">Select Department</option>
+              <!-- Populated by JS -->
+            </select>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="emp-manager">Direct Manager</label>
+            <select id="emp-manager" class="form-select">
+              <option value="">Select Manager</option>
+              <!-- Populated by JS -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="emp-hire-date">Hire Date</label>
+            <input type="date" id="emp-hire-date" class="form-input">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost btn-close-modal" data-modal="modal-add-employee">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Employee</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: ADD DEPARTMENT -->
+<div id="modal-add-dept" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Create Department</div>
+      <button type="button" style="background:none;border:none;font-size:18px;cursor:pointer;" class="modal-close" data-modal="modal-add-dept">✕</button>
+    </div>
+    <form id="form-add-dept">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="dept-name">Department Name <span class="required" style="color:var(--color-error)">*</span></label>
+          <input type="text" id="dept-name" class="form-input" placeholder="e.g. Sales & Marketing" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="dept-parent">Parent Department</label>
+          <select id="dept-parent" class="form-select">
+            <option value="">None (Top Level)</option>
+            <!-- Filled by JS -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="dept-head">Department Head</label>
+          <select id="dept-head" class="form-select">
+            <option value="">Select Head</option>
+            <!-- Filled by JS -->
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost btn-close-modal" data-modal="modal-add-dept">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Department</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: REQUEST LEAVE -->
+<div id="modal-request-leave" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Submit Leave Request</div>
+      <button type="button" style="background:none;border:none;font-size:18px;cursor:pointer;" class="modal-close" data-modal="modal-request-leave">✕</button>
+    </div>
+    <form id="form-request-leave">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="leave-type">Leave Type <span class="required" style="color:var(--color-error)">*</span></label>
+          <select id="leave-type" class="form-select" required>
+            <option value="">Select Leave Type</option>
+            <option value="annual">Annual Leave</option>
+            <option value="sick">Sick Leave</option>
+            <option value="unpaid">Unpaid Leave</option>
+          </select>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="leave-start">Start Date <span class="required" style="color:var(--color-error)">*</span></label>
+            <input type="date" id="leave-start" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="leave-end">End Date <span class="required" style="color:var(--color-error)">*</span></label>
+            <input type="date" id="leave-end" class="form-input" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="leave-notes">Notes / Reason</label>
+          <textarea id="leave-notes" class="form-textarea" rows="3" placeholder="Please provide details about your request..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost btn-close-modal" data-modal="modal-request-leave">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: ADD PERFORMANCE REVIEW -->
+<div id="modal-add-review" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">New Performance Review</div>
+      <button type="button" style="background:none;border:none;font-size:18px;cursor:pointer;" class="modal-close" data-modal="modal-add-review">✕</button>
+    </div>
+    <form id="form-add-review">
+      <input type="hidden" id="review-employee-id">
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="review-start">Period Start <span class="required" style="color:var(--color-error)">*</span></label>
+            <input type="date" id="review-start" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="review-end">Period End <span class="required" style="color:var(--color-error)">*</span></label>
+            <input type="date" id="review-end" class="form-input" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="review-score">Performance Rating (1-5) <span class="required" style="color:var(--color-error)">*</span></label>
+          <select id="review-score" class="form-select" required>
+            <option value="">Select Rating</option>
+            <option value="5">5 - Outstanding</option>
+            <option value="4">4 - Exceeds Expectations</option>
+            <option value="3">3 - Meets Expectations</option>
+            <option value="2">2 - Needs Improvement</option>
+            <option value="1">1 - Unsatisfactory</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="review-notes">Evaluation Comments <span class="required" style="color:var(--color-error)">*</span></label>
+          <textarea id="review-notes" class="form-textarea" rows="4" placeholder="Detail the achievements and areas of development..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost btn-close-modal" data-modal="modal-add-review">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Review</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: UPDATE EMPLOYEE RECORD -->
+<div id="modal-edit-profile" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Update Employee Profile</div>
+      <button type="button" style="background:none;border:none;font-size:18px;cursor:pointer;" class="modal-close" data-modal="modal-edit-profile">✕</button>
+    </div>
+    <form id="form-edit-profile">
+      <input type="hidden" id="edit-employee-id">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="edit-dept">Department</label>
+          <select id="edit-dept" class="form-select">
+            <option value="">None</option>
+            <!-- Populated by JS -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="edit-manager">Direct Manager</label>
+          <select id="edit-manager" class="form-select">
+            <option value="">None</option>
+            <!-- Populated by JS -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="edit-status">Employment Status</label>
+          <select id="edit-status" class="form-select">
+            <option value="active">Active</option>
+            <option value="on_leave">On Leave</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="edit-hire-date">Hire Date</label>
+          <input type="date" id="edit-hire-date" class="form-input">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost btn-close-modal" data-modal="modal-edit-profile">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>

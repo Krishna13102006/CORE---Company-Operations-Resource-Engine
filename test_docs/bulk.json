@@ -1,0 +1,52 @@
+[
+  {
+    "first_name": "Sarah",
+    "last_name": "Connor",
+    "email": "sarah.connor@acme.corp",
+    "role": "manager",
+    "department": "Engineering",
+    "designation": "VP of Engineering",
+    "manager_email": "",
+    "skills": ["Python", "Django", "System Architecture", "Kubernetes"]
+  },
+  {
+    "first_name": "Alex",
+    "last_name": "Chen",
+    "email": "alex.chen@acme.corp",
+    "role": "employee",
+    "department": "Engineering",
+    "designation": "Senior Frontend Engineer",
+    "manager_email": "sarah.connor@acme.corp",
+    "skills": ["React", "TypeScript", "TailwindCSS", "UI/UX"]
+  },
+  {
+    "first_name": "Maya",
+    "last_name": "Lin",
+    "email": "maya.lin@acme.corp",
+    "role": "employee",
+    "department": "Engineering",
+    "designation": "Backend Engineer",
+    "manager_email": "sarah.connor@acme.corp",
+    "skills": ["Django", "PostgreSQL", "Redis", "Docker"]
+  },
+  {
+    "first_name": "David",
+    "last_name": "Miller",
+    "email": "david.miller@acme.corp",
+    "role": "manager",
+    "department": "Design",
+    "designation": "Head of Product Design",
+    "manager_email": "",
+    "skills": ["Figma", "Design Systems", "Prototyping"]
+  },
+  {
+    "first_name": "Elena",
+    "last_name": "Rostova",
+    "email": "elena.rostova@acme.corp",
+    "role": "employee",
+    "department": "Design",
+    "designation": "Product Designer",
+    "manager_email": "david.miller@acme.corp",
+    "skills": ["Figma", "User Research", "Wireframing"]
+  }
+]

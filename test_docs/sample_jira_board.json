@@ -1,0 +1,42 @@
+[
+  {
+    "summary": "Implement End-to-End WebSocket Telemetry for AI Agents",
+    "description": "Establish persistent bi-directional WebSocket channels to stream LLM generation tokens in real-time.",
+    "priority": "high",
+    "status": "in_progress",
+    "epic": "Realtime AI",
+    "estimated_hours": 12.0
+  },
+  {
+    "summary": "Deploy PostgreSQL pgvector Extension for Semantic Search",
+    "description": "Index high-dimensional text embeddings in Neon database with HNSW indexes for sub-50ms vector similarity lookup.",
+    "priority": "critical",
+    "status": "todo",
+    "epic": "Database Optimization",
+    "estimated_hours": 8.5
+  },
+  {
+    "summary": "Develop Organization Governance & Audit Log Export",
+    "description": "Allow compliance officers to export signed CSV/JSON audit logs conforming to SOC2 and ISO27001 standards.",
+    "priority": "medium",
+    "status": "todo",
+    "epic": "Compliance",
+    "estimated_hours": 6.0
+  },
+  {
+    "summary": "Integrate Brevo & Resend Transactional Mail Dispatchers",
+    "description": "Add fallback logic to route system email notifications through secondary HTTP API if primary SMTP times out.",
+    "priority": "high",
+    "status": "done",
+    "epic": "Notifications",
+    "estimated_hours": 4.0
+  },
+  {
+    "summary": "Design Dark Mode UI Contrast Palette for Kanban Board",
+    "description": "Refine tailwind slate-950 borders and text luminance for better visual hierarchy during night sprints.",
+    "priority": "low",
+    "status": "done",
+    "epic": "UI/UX",
+    "estimated_hours": 3.0
+  }
+]

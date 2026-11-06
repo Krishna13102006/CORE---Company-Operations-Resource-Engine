@@ -1,0 +1,147 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: core_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME:-core_db}
+      POSTGRES_USER: ${DB_USER:-core_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-core_secure_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-core_user} -d ${DB_NAME:-core_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: core_redis
+    restart: always
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:v1.13.3
+    container_name: core_qdrant
+    restart: always
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:6333/readyz || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: core_web
+    restart: always
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py collectstatic --noinput &&
+             gunicorn -c gunicorn.conf.py config.wsgi:application"
+    env_file:
+      - .env.prod
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+
+  # Fast worker for emails, notifications, and lightweight jobs
+  celery-worker-default:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: core_celery_default
+    restart: always
+    command: celery -A config worker -l info -Q default,priority -c 4 --prefetch-multiplier=4
+    env_file:
+      - .env.prod
+    volumes:
+      - media_volume:/app/media
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # Dedicated worker for heavy document indexing, OCR, and embedding generation
+  celery-worker-indexing:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: core_celery_indexing
+    restart: always
+    command: celery -A config worker -l info -Q indexing -c 2 --prefetch-multiplier=1 -Ofair
+    env_file:
+      - .env.prod
+    volumes:
+      - media_volume:/app/media
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+
+  # Celery Beat for periodic scheduled tasks
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: core_celery_beat
+    restart: always
+    command: celery -A config beat -l info
+    env_file:
+      - .env.prod
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: core_frontend
+    restart: always
+
+  nginx-gateway:
+    image: nginx:1.27-alpine
+    container_name: core_gateway
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
+    depends_on:
+      - web
+      - frontend
+
+volumes:
+  postgres_data:
+  redis_data:
+  qdrant_data:
+  static_volume:
+  media_volume:

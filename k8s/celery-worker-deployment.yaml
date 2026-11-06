@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core-celery-indexing-worker
+  namespace: core
+  labels:
+    app: core-celery-indexing
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: core-celery-indexing
+  template:
+    metadata:
+      labels:
+        app: core-celery-indexing
+    spec:
+      containers:
+        - name: celery-indexing
+          image: ghcr.io/yourorg/core-web:latest
+          command: ["celery", "-A", "config", "worker", "-l", "info", "-Q", "indexing", "-c", "2", "--prefetch-multiplier=1", "-Ofair"]
+          envFrom:
+            - configMapRef:
+                name: core-config
+            - secretRef:
+                name: core-secrets
+          resources:
+            requests:
+              cpu: "1000m"
+              memory: "1024Mi"
+            limits:
+              cpu: "4000m"
+              memory: "4096Mi"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: core-celery-indexing-hpa
+  namespace: core
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: core-celery-indexing-worker
+  minReplicas: 2
+  maxReplicas: 12
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75

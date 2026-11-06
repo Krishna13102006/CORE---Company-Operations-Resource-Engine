@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORE — Enterprise AI Workspace & Operating System</title>
+  <meta name="description" content="CORE is the unified enterprise platform for RAG Knowledge Search, AI Predictive Attrition & Project Risk Scoring, Agile Task Management, and Smart HR Portals.">
+  {% load static %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/core.css' %}">
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+</head>
+<body class="landing-page-body">
+
+  <!-- Ambient Glowing Orbs Background -->
+  <div class="landing-ambient-bg">
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+    <div class="glow-orb glow-orb-3"></div>
+  </div>
+
+  <!-- Header Navigation Bar -->
+  <header class="landing-navbar">
+    <a href="/" class="landing-logo">
+      <div class="landing-logo-icon">C</div>
+      <span class="landing-logo-text">CORE</span>
+    </a>
+
+    <nav class="landing-nav-links">
+      <a href="#features" class="landing-nav-link">Capabilities</a>
+      <a href="#intelligence" class="landing-nav-link">AI & RAG</a>
+      <a href="#solutions" class="landing-nav-link">Solutions</a>
+      <a href="#security" class="landing-nav-link">Enterprise Security</a>
+    </nav>
+
+    <div class="landing-nav-actions" id="nav-actions">
+      <a href="/login/" class="btn-landing-login" id="nav-login-btn">Sign In</a>
+      <a href="/signup/" class="btn-landing-primary" id="nav-signup-btn">Get Started</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="landing-container">
+
+      <div class="hero-badge">
+        <span>⚡ Next-Gen Enterprise AI Workspace & HR Intelligence</span>
+      </div>
+
+      <h1 class="hero-title">
+        Operate with Intelligence.<br>
+        <span class="text-gradient">Scale with CORE.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        The unified enterprise operating system combining RAG Knowledge Search, AI Attrition & Project Risk predictions, HR portals, and Agile project tracking in one seamless workspace.
+      </p>
+
+      <div class="hero-ctas" id="hero-ctas">
+        <a href="/signup/" class="btn-landing-primary">Get Started Free &rarr;</a>
+        <a href="/login/" class="btn-landing-login">Sign In to Workspace</a>
+      </div>
+
+      <!-- Live Interactive Showcase Card -->
+      <div class="showcase-wrapper" id="intelligence">
+        <div class="showcase-header">
+          <div class="window-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+
+          <div class="showcase-tabs">
+            <button class="showcase-tab active" data-tab="rag">🧠 RAG Search</button>
+            <button class="showcase-tab" data-tab="risk">🔮 Predictive AI</button>
+            <button class="showcase-tab" data-tab="projects">📋 Agile Projects</button>
+            <button class="showcase-tab" data-tab="hiring">💼 Hiring Portal</button>
+          </div>
+        </div>
+
+        <div class="showcase-body">
+
+          <!-- Tab 1: RAG Search -->
+          <div class="tab-pane active" id="pane-rag">
+            <div class="mock-rag-search">
+              <div class="mock-search-input">
+                <span class="mock-search-icon">🔍</span>
+                <span>How do we handle remote onboarding passkeys for engineering managers?</span>
+              </div>
+              <div class="mock-ai-result">
+                <div class="mock-ai-title">
+                  <span>✨ CORE AI Synthesized Response</span>
+                </div>
+                <div class="mock-ai-text">
+                  Engineering managers are assigned role-scoped organization passkeys during tenant initialization. Onboarding mandates passkey validation under section 4.2 of the IT Governance Policy, followed by automated role assignments across multi-tenant scopes.
+                </div>
+                <div class="mock-sources">
+                  <span class="mock-source-tag">📄 Tenant_Policy_2026.pdf</span>
+                  <span class="mock-source-tag">📄 Security_Passkey_Guidelines.docx</span>
+                  <span class="mock-source-tag">📄 Engineering_Onboarding_V3.md</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Predictive Risk -->
+          <div class="tab-pane" id="pane-risk">
+            <div class="mock-risk-grid">
+              <div class="mock-risk-card">
+                <div class="mock-risk-header">
+                  <span style="font-size:14px;font-weight:700;color:var(--landing-text-primary);">Employee Attrition Risk</span>
+                  <span class="badge-risk-high">High Risk — 84%</span>
+                </div>
+                <p style="font-size:13px;color:var(--landing-text-muted);margin-bottom:12px;">Key Signals: Excessive Overtime (+35%), 42 Days since last 1-on-1 checkin.</p>
+                <div style="font-size:12px;color:#2E5DA6;font-weight:600;">Recommendation: Schedule retention sync & review workload distribution.</div>
+              </div>
+
+              <div class="mock-risk-card">
+                <div class="mock-risk-header">
+                  <span style="font-size:14px;font-weight:700;color:var(--landing-text-primary);">Project Deadline Risk</span>
+                  <span class="badge-risk-medium">Medium Risk — 58%</span>
+                </div>
+                <p style="font-size:13px;color:var(--landing-text-muted);margin-bottom:12px;">Signal: 3 Critical blocker tasks pending review across backend deployment.</p>
+                <div style="font-size:12px;color:#B45309;font-weight:600;">Recommendation: Reassign 2 unassigned tasks in sprint queue.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: Agile Projects -->
+          <div class="tab-pane" id="pane-projects">
+            <div style="display:flex;flex-direction:column;gap:12px;text-align:left;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--landing-bg-dark);border-radius:8px;border:1px solid var(--landing-card-border);">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <span style="color:#22C55E;font-size:16px;">✓</span>
+                  <span style="font-size:14px;font-weight:600;color:var(--landing-text-primary);">Implement JWT Token Refresh Handler</span>
+                </div>
+                <span style="font-size:12px;color:var(--landing-text-muted);background:rgba(0,0,0,0.04);padding:4px 10px;border-radius:4px;">Completed</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--landing-bg-dark);border-radius:8px;border:1px solid var(--landing-card-border);">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <span style="color:#F59E0B;font-size:16px;">⏳</span>
+                  <span style="font-size:14px;font-weight:600;color:var(--landing-text-primary);">ML Attrition Score Batch Inference Pipeline</span>
+                </div>
+                <span style="font-size:12px;color:#B45309;background:rgba(245,158,11,0.1);padding:4px 10px;border-radius:4px;">In Progress</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 4: Hiring Portal -->
+          <div class="tab-pane" id="pane-hiring">
+            <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;text-align:left;">
+              <div style="background:var(--landing-bg-dark);padding:16px;border-radius:10px;border:1px solid var(--landing-card-border);">
+                <div style="font-size:11px;color:var(--landing-text-subtle);text-transform:uppercase;margin-bottom:6px;">Applied</div>
+                <div style="font-size:24px;font-weight:800;color:var(--landing-text-primary);">142</div>
+              </div>
+              <div style="background:var(--landing-bg-dark);padding:16px;border-radius:10px;border:1px solid var(--landing-card-border);">
+                <div style="font-size:11px;color:var(--landing-text-subtle);text-transform:uppercase;margin-bottom:6px;">Screened</div>
+                <div style="font-size:24px;font-weight:800;color:#2E5DA6;">38</div>
+              </div>
+              <div style="background:var(--landing-bg-dark);padding:16px;border-radius:10px;border:1px solid var(--landing-card-border);">
+                <div style="font-size:11px;color:var(--landing-text-subtle);text-transform:uppercase;margin-bottom:6px;">Interview</div>
+                <div style="font-size:24px;font-weight:800;color:#E8762B;">14</div>
+              </div>
+              <div style="background:var(--landing-bg-dark);padding:16px;border-radius:10px;border:1px solid var(--landing-card-border);">
+                <div style="font-size:11px;color:var(--landing-text-subtle);text-transform:uppercase;margin-bottom:6px;">Hired</div>
+                <div style="font-size:24px;font-weight:800;color:#2D7D46;">6</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Metrics Bar Section -->
+  <section class="metrics-section">
+    <div class="landing-container">
+      <div class="metrics-grid">
+        <div>
+          <div class="metric-number">&lt; 100ms</div>
+          <div class="metric-label">RAG Vector Search Latency</div>
+        </div>
+        <div>
+          <div class="metric-number">99.9%</div>
+          <div class="metric-label">Platform Uptime</div>
+        </div>
+        <div>
+          <div class="metric-number">100%</div>
+          <div class="metric-label">Multi-Tenant Data Isolation</div>
+        </div>
+        <div>
+          <div class="metric-number">4x</div>
+          <div class="metric-label">Faster HR & Team Insights</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities Feature Grid -->
+  <section class="features-section" id="features">
+    <div class="landing-container">
+      
+      <div class="section-header">
+        <h2 class="section-title">Built for Modern Enterprise Operations</h2>
+        <p class="section-subtitle">Everything your organization needs to orchestrate teams, project deadlines, knowledge search, and recruitment pipeline in one place.</p>
+      </div>
+
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper icon-orange">🧠</div>
+          <h3 class="feature-title">RAG Knowledge Search</h3>
+          <p class="feature-desc">Query enterprise documents using advanced AI embeddings for immediate, context-aware answers with explicit source document attribution.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper icon-purple">🔮</div>
+          <h3 class="feature-title">Predictive AI Analytics</h3>
+          <p class="feature-desc">Machine learning models evaluate team retention signals and project timelines to deliver proactive Attrition and Delay risk scoring.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper icon-blue">📋</div>
+          <h3 class="feature-title">Agile Project Hub</h3>
+          <p class="feature-desc">Manage project roadmaps, track task priorities, monitor team progress, and resolve blockers with real-time analytics controls.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper icon-green">👥</div>
+          <h3 class="feature-title">Team & Leave Management</h3>
+          <p class="feature-desc">Organize departmental structures, track employee leave schedules, manage checkins, and maintain complete team headcount visibility.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper icon-yellow">💼</div>
+          <h3 class="feature-title">Smart Hiring Portal</h3>
+          <p class="feature-desc">Publish job postings, track applicant recruitment funnels, calculate candidate match scores, and streamline HR interviewing pipelines.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper icon-teal">🔐</div>
+          <h3 class="feature-title">Role-Based Passkey Auth</h3>
+          <p class="feature-desc">Granular multi-tenant organization isolation backed by secure passkey onboarding for Admin, HR, Manager, and Employee roles.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Security & Multi-Tenancy Section -->
+  <section class="security-section" id="security">
+    <div class="landing-container">
+      <div class="security-box">
+        <div class="security-content">
+          <h3>Enterprise Grade Security & Multi-Tenancy</h3>
+          <p>CORE enforces strict data isolation across tenant organizations. Every API request and vector embedding query is scoped to your specific tenant credentials.</p>
+          <div class="security-list">
+            <div class="security-item">
+              <span class="security-check">✓</span>
+              <span>Tenant-Isolated Database & Vector Collections</span>
+            </div>
+            <div class="security-item">
+              <span class="security-check">✓</span>
+              <span>Role-Based Passkey Authentication (Admin, HR, Manager, Employee)</span>
+            </div>
+            <div class="security-item">
+              <span class="security-check">✓</span>
+              <span>Session JWT Bearer Tokens with Automatic Refresh Handlers</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <div style="background:var(--landing-bg-dark);border:1px solid var(--landing-card-border);padding:32px;border-radius:16px;width:100%;text-align:center;">
+            <div style="font-size:48px;margin-bottom:12px;">🛡️</div>
+            <div style="font-size:18px;font-weight:700;color:var(--landing-text-primary);margin-bottom:8px;">Zero-Trust Architecture</div>
+            <div style="font-size:13px;color:var(--landing-text-muted);">End-to-end multi-tenant boundaries ensuring enterprise data stays isolated and compliant.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Banner -->
+  <section class="landing-container">
+    <div class="cta-banner">
+      <h2>Ready to Elevate Your Workspace Intelligence?</h2>
+      <p>Sign up now or sign in to your enterprise organization workspace.</p>
+      <a href="/signup/" class="btn-cta-white">Get Started Free</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="landing-container">
+      <div class="footer-top">
+        <div class="landing-logo">
+          <div class="landing-logo-icon" style="width:28px;height:28px;font-size:14px;">C</div>
+          <span class="landing-logo-text" style="font-size:18px;">CORE</span>
+        </div>
+        <div style="display:flex;gap:24px;">
+          <a href="/login/" style="color:var(--landing-text-muted);text-decoration:none;">Sign In</a>
+          <a href="/signup/" style="color:var(--landing-text-muted);text-decoration:none;">Create Account</a>
+          <a href="/dashboard/" style="color:var(--landing-text-muted);text-decoration:none;">Workspace</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 CORE Enterprise Intelligence Platform. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="{% static 'js/landing.js' %}"></script>
+</body>
+</html>

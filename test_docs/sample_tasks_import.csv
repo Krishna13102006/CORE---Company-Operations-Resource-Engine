@@ -1,0 +1,6 @@
+title,description,priority,status,estimated_hours,epic
+Implement OAuth2 Google Workspace Single Sign-On,Allow users to authenticate seamlessly using corporate Google accounts,high,todo,8.0,Authentication
+Configure Automated Daily PostgreSQL Backups,Setup S3 lifecycle bucket retention and automated pg_dump cron jobs,critical,in_progress,6.0,Infrastructure
+Add PDF Document Vault Watermarking,Stamp dynamic confidential user watermarks on all downloaded PDF documents,medium,todo,5.5,Security
+Optimize Groq LLaMA 3.3 Prompt Tokens,Reduce prompt overhead by stripping unnecessary markdown whitespace,low,done,2.0,AI Engine
+Build Sprint Velocity Executive Export,Generate PDF executive summaries directly from the Sprint Retrospective modal,medium,todo,4.0,Reporting

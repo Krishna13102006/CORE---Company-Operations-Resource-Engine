@@ -1,0 +1,399 @@
+<!-- DATABASE & DOCUMENTS PANEL -->
+
+<div class="page-header">
+  <div class="page-header-left">
+    <h1>Database & Documents</h1>
+    <p>Platform administration and document management</p>
+  </div>
+</div>
+
+<!-- TAB SWITCHER -->
+<div id="docs-tabs" style="display:flex;gap:4px;margin-bottom:24px;border-bottom:2px solid var(--color-border);padding-bottom:0;">
+  <button class="docs-tab active" data-tab="platform" style="padding:10px 20px;background:none;border:none;border-bottom:2px solid var(--color-orange);margin-bottom:-2px;font-family:inherit;font-size:14px;font-weight:600;color:var(--color-orange);cursor:pointer;">
+    Platform Admin
+  </button>
+  <button class="docs-tab" data-tab="documents" style="padding:10px 20px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:inherit;font-size:14px;font-weight:500;color:var(--color-text-muted);cursor:pointer;">
+    Document Management
+  </button>
+</div>
+
+<!-- ==================== TAB 1: PLATFORM ADMIN ==================== -->
+<div id="tab-platform" class="docs-tab-content">
+
+  <!-- ORG SETTINGS -->
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-header">
+      <span class="text-card-title">Organization Settings</span>
+    </div>
+    <div class="card-body">
+      <div id="org-settings-loading" style="color:var(--color-text-muted);font-size:14px;">Loading...</div>
+      <div id="org-settings-form" style="display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">Organization Name</label>
+            <div id="org-name-display" style="padding:10px 14px;background:var(--color-bg);border:1px solid var(--color-border);border-radius:6px;font-size:14px;color:var(--color-text-muted);">—</div>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">Plan</label>
+            <div id="org-plan-display" style="padding:10px 14px;background:var(--color-bg);border:1px solid var(--color-border);border-radius:6px;font-size:14px;color:var(--color-text-muted);">—</div>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">Member Since</label>
+            <div id="org-created-display" style="padding:10px 14px;background:var(--color-bg);border:1px solid var(--color-border);border-radius:6px;font-size:14px;color:var(--color-text-muted);">—</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">Max Users</label>
+            <input type="number" id="settings-max-users" class="form-input" min="1" max="10000">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">Max Documents</label>
+            <input type="number" id="settings-max-docs" class="form-input" min="1" max="100000">
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" id="btn-save-settings">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER MANAGEMENT -->
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;">
+      <span class="text-card-title">User Management</span>
+      <input type="text" id="user-search" class="form-input" placeholder="Search users..." style="width:220px;margin-bottom:0;">
+    </div>
+    <div class="card-body" style="padding:0;">
+      <div class="table-container" style="border:none;border-radius:0;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--color-text-muted);">Loading users...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIT LOG -->
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-header">
+      <span class="text-card-title">Audit Log</span>
+    </div>
+    <div class="card-body" style="padding:0;">
+      <div class="table-container" style="border:none;border-radius:0;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Actor</th>
+              <th>Action</th>
+              <th>Target</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody id="audit-log-body">
+            <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--color-text-muted);">Loading audit log...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="audit-log-pagination" style="padding:12px 16px;"></div>
+    </div>
+  </div>
+
+  <!-- ROLE OVERVIEW -->
+  <div class="card">
+    <div class="card-header">
+      <span class="text-card-title">Role & Panel Access Overview</span>
+    </div>
+    <div class="card-body" style="padding:0;">
+      <div class="table-container" style="border:none;border-radius:0;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Knowledge</th>
+              <th>Projects</th>
+              <th>Teams</th>
+              <th>Hiring</th>
+              <th>Database & Docs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-grey">Employee</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-error);">✕</span></td>
+              <td><span style="color:var(--color-error);">✕</span></td>
+              <td><span style="color:var(--color-error);">✕</span></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-blue">Manager</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-error);">✕</span></td>
+              <td><span style="color:var(--color-error);">✕</span></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-yellow">HR</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-error);">✕</span></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-orange">Admin</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+              <td><span style="color:var(--color-success);font-weight:600;">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== TAB 2: DOCUMENT MANAGEMENT ==================== -->
+<div id="tab-documents" class="docs-tab-content" style="display:none;">
+
+  <!-- STATS STRIP -->
+  <div class="stats-grid" id="doc-stats-grid" style="margin-bottom:24px;">
+    <div class="stat-card">
+      <div class="stat-card-label">Total Documents</div>
+      <div class="stat-card-value" id="stat-total-docs">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Storage Used</div>
+      <div class="stat-card-value" id="stat-storage">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Searchable</div>
+      <div class="stat-card-value" id="stat-searchable">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Processing</div>
+      <div class="stat-card-value" id="stat-processing">—</div>
+    </div>
+  </div>
+
+  <!-- DOCUMENT LIBRARY -->
+  <div class="card">
+    <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <span class="text-card-title">Document Library</span>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <input type="text" id="doc-search" class="form-input" placeholder="Search documents..." style="width:200px;margin-bottom:0;">
+        <select id="doc-filter-status" class="form-select" style="width:140px;margin-bottom:0;">
+          <option value="">All Statuses</option>
+          <option value="uploaded">Uploaded</option>
+          <option value="processing">Processing</option>
+          <option value="searchable">Searchable</option>
+          <option value="failed">Failed</option>
+        </select>
+        <select id="doc-filter-type" class="form-select" style="width:120px;margin-bottom:0;">
+          <option value="">All Types</option>
+          <option value="pdf">PDF</option>
+          <option value="docx">DOCX</option>
+          <option value="txt">TXT</option>
+        </select>
+        <button class="btn btn-primary btn-sm" id="btn-upload-doc" style="display:flex;align-items:center;gap:6px;"><span>📂</span> Upload Documents</button>
+      </div>
+    </div>
+    <div class="card-body" style="padding:0;">
+      <div class="table-container" style="border:none;border-radius:0;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Uploaded By</th>
+              <th>Size</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="docs-table-body">
+            <tr><td colspan="8" style="text-align:center;padding:32px;color:var(--color-text-muted);">Loading documents...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="docs-pagination" style="padding:12px 16px;"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- Upload Documents Modal (Bulk) -->
+<div id="modal-upload" class="modal-overlay hidden">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-header">
+      <span class="modal-title">Upload Documents</span>
+      <button class="btn btn-icon btn-ghost" id="modal-upload-close" style="font-size:18px;line-height:1;">×</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select id="upload-category" class="form-select">
+          <option value="">Leave blank — auto-classify later</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Finance">Finance</option>
+          <option value="Legal">Legal</option>
+          <option value="HR">HR</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Operations">Operations</option>
+        </select>
+        <span class="form-help-text">
+          Optional. Applies to all uploaded documents in this batch.
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Files (PDF, DOCX, TXT) <span class="required">*</span>
+        </label>
+        <div
+          id="doc-drop-zone"
+          style="border:2px dashed var(--color-border);border-radius:8px;padding:32px 24px;text-align:center;cursor:pointer;transition:border-color 0.15s ease,background-color 0.15s ease;background:var(--color-bg);"
+        >
+          <div style="font-size:36px;margin-bottom:8px;">📂</div>
+          <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;">
+            Drop multiple files here or click to browse
+          </div>
+          <div style="font-size:11px;color:var(--color-text-muted);">
+            PDF, DOCX, TXT — upload up to 10 files at once
+          </div>
+          <input
+            type="file"
+            id="upload-file"
+            accept=".pdf,.docx,.txt"
+            multiple
+            style="display:none;"
+          >
+        </div>
+
+        <!-- File list preview -->
+        <div id="doc-files-preview" style="display:none;margin-top:16px;max-height:150px;overflow-y:auto;
+                    padding:8px;background:var(--color-bg);border:1px solid var(--color-border);border-radius:6px;
+                    display:flex;flex-direction:column;gap:6px;">
+        </div>
+      </div>
+
+      <div id="doc-upload-error" style="display:none;padding:10px 14px;background:var(--color-error-bg);border-radius:6px;color:var(--color-error);font-size:13px;margin-top:8px;">
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="modal-upload-cancel">Cancel</button>
+      <button class="btn btn-primary" id="btn-submit-upload">
+        Upload Documents
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Document Modal -->
+<div id="modal-edit-doc" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Edit Document</span>
+      <button class="btn btn-icon btn-ghost" id="modal-edit-close" style="font-size:18px;line-height:1;">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-doc-id">
+      <div class="form-group">
+        <label class="form-label">Title</label>
+        <input type="text" id="edit-doc-title" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select id="edit-doc-category" class="form-select">
+          <option value="">Uncategorized</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Finance">Finance</option>
+          <option value="Legal">Legal</option>
+          <option value="HR">HR</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Operations">Operations</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Keywords</label>
+        <input type="text" id="edit-doc-keywords" class="form-input" placeholder="Comma-separated, e.g. docker, deployment, containers">
+        <span class="form-help-text">Enter keywords separated by commas</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="modal-edit-cancel">Cancel</button>
+      <button class="btn btn-primary" id="btn-submit-edit">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit User Role Modal -->
+<div id="modal-edit-user" class="modal-overlay hidden">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <span class="modal-title">Edit User</span>
+      <button class="btn btn-icon btn-ghost" id="modal-user-close" style="font-size:18px;line-height:1;">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-user-id">
+      <div class="form-group">
+        <label class="form-label">User</label>
+        <div id="edit-user-name-display" style="font-weight:600;color:var(--color-text-primary);margin-bottom:4px;">—</div>
+        <div id="edit-user-email-display" style="font-size:13px;color:var(--color-text-muted);">—</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role</label>
+        <select id="edit-user-role" class="form-select">
+          <option value="employee">Employee</option>
+          <option value="manager">Manager</option>
+          <option value="hr">HR</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="modal-user-cancel">Cancel</button>
+      <button class="btn btn-primary" id="btn-submit-user-edit">Save Role</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div id="modal-confirm-delete" class="modal-overlay hidden">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <span class="modal-title">Delete Document</span>
+      <button class="btn btn-icon btn-ghost" id="modal-delete-close" style="font-size:18px;line-height:1;">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="delete-doc-id">
+      <p style="color:var(--color-text-secondary);font-size:14px;">Are you sure you want to delete <strong id="delete-doc-name"></strong>? This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="modal-delete-cancel">Cancel</button>
+      <button class="btn btn-danger" id="btn-confirm-delete">Delete</button>
+    </div>
+  </div>
+</div>

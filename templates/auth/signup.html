@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — CORE</title>
+  {% load static %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/core.css' %}">
+  <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card" style="max-width:520px;">
+
+      <div class="auth-logo">
+        <div class="auth-logo-text">CORE</div>
+        <div class="auth-logo-sub">Enterprise Platform</div>
+      </div>
+
+      <h1 class="auth-title">Create your account</h1>
+      <p class="auth-subtitle">Fill in your details to get started</p>
+
+      <form id="signup-form" novalidate>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" for="first-name">First name <span class="required">*</span></label>
+            <input type="text" id="first-name" class="form-input" placeholder="Jane" required>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" for="last-name">Last name <span class="required">*</span></label>
+            <input type="text" id="last-name" class="form-input" placeholder="Smith" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:16px;">
+          <label class="form-label" for="email">Email address <span class="required">*</span></label>
+          <input type="email" id="email" class="form-input" placeholder="you@company.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password <span class="required">*</span></label>
+          <input type="password" id="password" class="form-input" placeholder="Minimum 8 characters" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="role">Your role <span class="required">*</span></label>
+          <select id="role" class="form-select" required>
+            <option value="">Select your role</option>
+            <option value="employee">Employee / Junior Developer</option>
+            <option value="manager">Manager / Senior Developer / Tech Lead</option>
+            <option value="hr">HR Manager</option>
+            <option value="admin">Admin (create new organization)</option>
+            <option value="admin_join">Admin (join existing organization)</option>
+          </select>
+        </div>
+
+        <!-- Admin fields: shown only when Admin is selected -->
+        <div id="admin-fields" class="conditional-fields">
+          <hr class="auth-divider">
+          <p class="text-label" style="margin-bottom:16px;color:var(--color-blue-mid);font-weight:600;">NEW ORGANIZATION SETUP</p>
+
+          <div class="form-group">
+            <label class="form-label" for="org-name">Organization name <span class="required">*</span></label>
+            <input type="text" id="org-name" class="form-input" placeholder="Acme Corporation">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="org-slug">Organization ID (slug) <span class="required">*</span></label>
+            <input type="text" id="org-slug" class="form-input" placeholder="acme-corp">
+            <span class="form-help-text">Lowercase letters, numbers, and hyphens only. Used to identify your org.</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="org-passkey">Admin Passkey <span class="required">*</span></label>
+              <input type="password" id="org-passkey" class="form-input" placeholder="Admin passkey">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="org-hr-passkey">HR Passkey <span class="required">*</span></label>
+              <input type="password" id="org-hr-passkey" class="form-input" placeholder="HR passkey">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="org-manager-passkey">Manager Passkey <span class="required">*</span></label>
+              <input type="password" id="org-manager-passkey" class="form-input" placeholder="Manager passkey">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="org-employee-passkey">Employee Passkey <span class="required">*</span></label>
+              <input type="password" id="org-employee-passkey" class="form-input" placeholder="Employee passkey">
+            </div>
+          </div>
+          <span class="form-help-text" style="display:block;margin-top:8px;">
+            Define separate passkeys for each role to prevent unauthorized access at sign up.
+          </span>
+        </div>
+
+        <!-- Employee fields: shown for all non-admin roles -->
+        <div id="employee-fields" class="conditional-fields">
+          <hr class="auth-divider">
+          <p class="text-label" style="margin-bottom:16px;color:var(--color-blue-mid);font-weight:600;">JOIN YOUR ORGANIZATION</p>
+
+          <div class="form-group">
+            <label class="form-label" for="org-slug-select">Select your organization <span class="required">*</span></label>
+            <select id="org-slug-select" class="form-select">
+              <option value="">Loading organizations...</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="passkey">Organization passkey <span class="required">*</span></label>
+            <input type="password" id="passkey" class="form-input" placeholder="Enter your organization's passkey">
+            <span class="form-help-text">Ask your Admin for the organization passkey.</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:20px;">
+          Create account
+        </button>
+
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="/login/">Sign in</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="{% static 'js/api.js' %}"></script>
+  <script src="{% static 'js/toast.js' %}"></script>
+  <script src="{% static 'js/auth.js' %}"></script>
+</body>
+</html>
